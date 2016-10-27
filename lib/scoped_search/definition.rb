@@ -119,7 +119,7 @@ module ScopedSearch
 
       # Returns true if this is a textual column.
       def textual?
-        [:string, :text].include?(type)
+        [:string, :text, :uuid].include?(type)
       end
 
       # Returns true if this is a set.
@@ -130,7 +130,7 @@ module ScopedSearch
       # Returns the default search operator for this field.
       def default_operator
         @default_operator ||= case type
-          when :string, :text then :like
+          when :string, :text, :uuid then :like
           else :eq
         end
       end
@@ -206,7 +206,7 @@ module ScopedSearch
     def default_fields_for(value, operator = nil)
 
       column_types  = []
-      column_types += [:string, :text]                if [nil, :like, :unlike, :ne, :eq].include?(operator)
+      column_types += [:string, :text, :uuid]         if [nil, :like, :unlike, :ne, :eq].include?(operator)
       column_types += [:double, :float, :decimal]     if value =~ NUMERICAL_REGXP
       column_types += [:integer]                      if value =~ INTEGER_REGXP
       column_types += [:datetime, :date, :timestamp]  if (parse_temporal(value))
